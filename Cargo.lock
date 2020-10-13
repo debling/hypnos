@@ -60,7 +60,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "dwm-status"
+name = "hypnos"
 version = "0.1.0"
 dependencies = [
  "alsa",
