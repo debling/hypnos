@@ -8,6 +8,8 @@ use chrono::Timelike;
 use alsa;
 use alsa::poll::Descriptors;
 
+pub mod render;
+
 pub struct XDisplay(pub *mut xlib::Display);
 
 impl XDisplay {
