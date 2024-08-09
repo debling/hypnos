@@ -2,12 +2,12 @@
 name = "hypnos"
 version = "0.1.0"
 authors = ["Denílson dos Santos Ebling <d.ebling8@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-x11 = { version = "2.18", features = ["xlib"] }
+# x11 = { version = "2.18", features = ["xlib"] }
 chrono = { version =  "0.4.19", features = ["alloc"] }
-alsa = "0.4.2"
+# alsa = "0.4.2"
 libc = { version = "0.2.79", features = ["std"] }

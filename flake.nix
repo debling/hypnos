@@ -5,16 +5,19 @@
 
   outputs = { self, nixpkgs }:
     let
-      systems = [
+      releaseSystems = [
         # only linux support
         "aarch64-linux"
         "x86_64-linux"
+
+      ];
+      devSystems = releaseSystems ++ [
+        # development on darwin
+        "aarch64-darwin"
+        "x86_64-dawin"
       ];
 
-      forEachSystem = fn: nixpkgs.lib.genAttrs systems (system: fn
-        nixpkgs.legacyPackages.${system});
-
-      forEachSystemPkgs = fn: nixpkgs.lib.genAttrs systems (system:
+      forEachSystem = systems: fn: nixpkgs.lib.genAttrs systems (system:
         let
           pkgs = import nixpkgs { inherit system; };
         in
@@ -22,7 +25,7 @@
       );
     in
     {
-      packages = forEachSystemPkgs (pkgs:
+      packages = forEachSystem releaseSystems (pkgs:
         {
           default = self.packages.${pkgs.system}.hypnos;
 
@@ -45,13 +48,13 @@
         }
       );
 
-      devShell = forEachSystem (pkgs:
+      devShell = forEachSystem devSystems (pkgs:
         pkgs.mkShell {
-          packages = with pkgs; [ rustc cargo rustfmt rust-analyzer xorg.libX11 alsaLib pkg-config ];
+          packages = with pkgs; [ rustc clippy cargo rustfmt rust-analyzer pkg-config ];
           RUST_SRC_PATH = pkgs.rustPlatform.rustLibSrc;
         }
       );
 
-      formatter = forEachSystemPkgs (pkgs: pkgs.nixpkgs-fmt);
+      formatter = forEachSystem devSystems (pkgs: pkgs.nixpkgs-fmt);
     };
 }
